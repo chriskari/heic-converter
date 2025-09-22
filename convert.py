@@ -1,10 +1,3 @@
-"""
-Batch HEIC to JPEG converter script
-Converts all HEIC files from 'input' folder to 'output' folder
-Requires: pillow-heif library
-Install with: pip install pillow-heif pillow
-"""
-
 import sys
 from pathlib import Path
 from PIL import Image
@@ -50,8 +43,6 @@ def batch_convert_heic_to_jpg(input_folder="input", output_folder="output", qual
         output_folder (str): Output folder path (default: "output")
         quality (int): JPEG quality (1-100, default 90)
 
-    Returns:
-        tuple: (successful_conversions, failed_conversions, total_files)
     """
     # Register HEIF opener with Pillow
     pillow_heif.register_heif_opener()
@@ -103,7 +94,7 @@ def batch_convert_heic_to_jpg(input_folder="input", output_folder="output", qual
     print(f"   ❌ Failed: {failed}")
     print(f"   📄 Total files: {len(heic_files)}")
 
-    return failed
+    return
 
 
 def main():
@@ -115,21 +106,6 @@ def main():
 
     # Parse command line arguments
     if len(sys.argv) > 1:
-        if sys.argv[1] in ["-h", "--help"]:
-            print(
-                "Usage: python batch_heic_converter.py [input_folder] [output_folder] [quality]"
-            )
-            print("Example: python batch_heic_converter.py")
-            print(
-                "Example: python batch_heic_converter.py my_photos converted_photos 95"
-            )
-            print("Example: python batch_heic_converter.py input output 85")
-            print("\nDefault values:")
-            print("  input_folder: 'input'")
-            print("  output_folder: 'output'")
-            print("  quality: 90")
-            return
-
         input_folder = sys.argv[1]
 
     if len(sys.argv) > 2:
@@ -146,10 +122,7 @@ def main():
             sys.exit(1)
 
     try:
-        failed = batch_convert_heic_to_jpg(input_folder, output_folder, quality)
-
-        if failed > 0:
-            sys.exit(1)  # Exit with error code if any conversions failed
+        batch_convert_heic_to_jpg(input_folder, output_folder, quality)
 
     except Exception as e:
         print(f"❌ Batch conversion failed: {e}")
