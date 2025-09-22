@@ -92,11 +92,6 @@ def batch_convert_heic_to_jpg(input_folder="input", output_folder="output", qual
         jpg_filename = heic_file.stem + ".jpg"
         jpg_path = output_path / jpg_filename
 
-        # Skip if output file already exists (optional - you can remove this check)
-        if jpg_path.exists():
-            print(f"⏭️  Skipping {heic_file.name} (output already exists)")
-            continue
-
         if convert_heic_to_jpg(heic_file, jpg_path, quality):
             successful += 1
         else:
@@ -108,7 +103,7 @@ def batch_convert_heic_to_jpg(input_folder="input", output_folder="output", qual
     print(f"   ❌ Failed: {failed}")
     print(f"   📄 Total files: {len(heic_files)}")
 
-    return successful, failed, len(heic_files)
+    return failed
 
 
 def main():
@@ -151,9 +146,7 @@ def main():
             sys.exit(1)
 
     try:
-        successful, failed, total = batch_convert_heic_to_jpg(
-            input_folder, output_folder, quality
-        )
+        failed = batch_convert_heic_to_jpg(input_folder, output_folder, quality)
 
         if failed > 0:
             sys.exit(1)  # Exit with error code if any conversions failed
